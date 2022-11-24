@@ -95,7 +95,8 @@ class _HomePageState extends State<HomePage> {
 
   Future<List<ShowDataModel>> getdata() async {
     datalist = [];
-    var response = await http.get(Uri.parse('http://10.0.2.2:8000'));
+    var response = await http
+        .get(Uri.parse('https://limitless-citadel-45775.herokuapp.com/'));
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       for (Map<String, dynamic> i in data) {
