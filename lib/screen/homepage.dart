@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<Response> deleteAlbum(String id) async {
     final http.Response response = await http.delete(
-      Uri.parse(Constants.url + "/" + id + "/"),
+      Uri.parse(Constants.url + id + "/"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Accept': "application/json",
@@ -64,10 +64,10 @@ class _HomePageState extends State<HomePage> {
     final String desVal = _descController.text;
     if (textVal.isNotEmpty && desVal.isNotEmpty) {
       http.put(
-        Uri.parse(Constants.url + "/" + id + "/"),
+        Uri.parse(Constants.url + id + "/"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          // 'Accept': 'application/json',
+          'Accept': 'application/json',
         },
         body: jsonEncode(<String, String>{
           'task': _titleController.text,
@@ -95,8 +95,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<List<ShowDataModel>> getdata() async {
     datalist = [];
-    var response = await http
-        .get(Uri.parse('https://limitless-citadel-45775.herokuapp.com/'));
+    var response = await http.get(Uri.parse(Constants.url));
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       for (Map<String, dynamic> i in data) {
@@ -130,8 +129,8 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 TextField(
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
+                  // keyboardType:
+                  //     const TextInputType.numberWithOptions(decimal: true),
                   controller: _descController,
                   decoration: const InputDecoration(
                     labelText: 'Description of Task',
@@ -254,11 +253,20 @@ class _HomePageState extends State<HomePage> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        snapshot.data![index].task.toString(),
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
+                                      Flexible(
+                                        child: Container(
+                                          padding: const EdgeInsets.only(
+                                              right: 13.0),
+                                          child: Text(
+                                            snapshot.data![index].task
+                                                .toString(),
+                                            overflow: TextOverflow.visible,
+                                            style: const TextStyle(
+                                              fontSize: 18.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                       ElevatedButton(
                                           style: ElevatedButton.styleFrom(
